@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Failed suite [MagicBricks]" allow-return-values="true">
+  <test name="Grouping(failed)">
+    <classes>
+      <class name="com.MagicBricks.scenarios.MagentoHomeScenario">
+        <methods>
+          <include name="setupSuite"/>
+          <include name="tearDown"/>
+          <include name="tearDown"/>
+          <include name="openBrowser"/>
+          <include name="reportHeader"/>
+        </methods>
+      </class> <!-- com.MagicBricks.scenarios.MagentoHomeScenario -->
+      <class name="com.MagicBricks.scenarios.MagentoAlertScenario">
+        <methods>
+          <include name="tearDown"/>
+          <include name="openBrowser"/>
+          <include name="reportHeader"/>
+        </methods>
+      </class> <!-- com.MagicBricks.scenarios.MagentoAlertScenario -->
+      <class name="com.MagicBricks.scenarios.MagentoPriceScenario">
+        <methods>
+          <include name="tearDown"/>
+          <include name="openBrowser"/>
+          <include name="reportHeader"/>
+        </methods>
+      </class> <!-- com.MagicBricks.scenarios.MagentoPriceScenario -->
+      <class name="com.MagicBricks.scenarios.MagentoCompareScenario">
+        <methods>
+          <include name="tearDown"/>
+          <include name="openBrowser"/>
+          <include name="TC_4"/>
+          <include name="reportHeader"/>
+        </methods>
+      </class> <!-- com.MagicBricks.scenarios.MagentoCompareScenario -->
+      <class name="com.MagicBricks.scenarios.MagentoCreateAccountScenario">
+        <methods>
+          <include name="tearDown"/>
+          <include name="openBrowser"/>
+          <include name="reportHeader"/>
+        </methods>
+      </class> <!-- com.MagicBricks.scenarios.MagentoCreateAccountScenario -->
+    </classes>
+  </test> <!-- Grouping(failed) -->
+</suite> <!-- Failed suite [MagicBricks] -->

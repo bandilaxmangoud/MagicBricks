@@ -1,0 +1,159 @@
+package com.airAsia.scripts.signin;  
+
+import org.apache.log4j.Logger;
+import org.testng.Assert;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+
+import com.airAsia.workFlows.OneWayTrip;
+import com.ctaf.accelerators.TestEngine;
+import com.ctaf.support.ExcelReader;
+import com.ctaf.support.HtmlReportSupport;
+import com.ctaf.utilities.Reporter;
+/*
+ * Test method Verify Error Message whether user Enters AU Email Instead oF NZ Email
+ * 
+ */
+public class ONeWayBookingWithOneAdultandNoAddOns extends OneWayTrip {
+	ExcelReader xlsrdr = new ExcelReader(configProps.getProperty("TestData"),
+			configProps.getProperty("sheetName1"));
+	Logger logger = Logger.getLogger(ONeWayBookingWithOneAdultandNoAddOns.class.getName());
+
+	/*
+	 * Verify Error Message whether user Enters AU Email Instead oF NZ Email
+	 */
+	@Test()
+	public void TC_1_ONeWay_Booking_With_OneAdult_and_NoAddOns() throws Throwable {
+	
+		TestEngine.testDescription.put(HtmlReportSupport.tc_name,  " ONeWay Booking With OneAdult and NoAddOns");
+		if( OneWayBookingDetails(1,0,"OneWay")){
+			Reporter.SuccessReport("validate OneWayBookingDetails","validate OneWayBookingDetails Successfully");
+			if( SelectFlights("")){
+				Reporter.SuccessReport("validate OneWaySelectFlights","validate OneWaySelectFlights Successfully");
+
+				if(EnteringPassengerDetails(true,false,false)){
+					Reporter.SuccessReport("validate EnteringPassengerDetails","validate EnteringPassengerDetails Successfully");
+					if(selectSeat(1,"")){
+						Reporter.SuccessReport("validate Select Seat Details","validate Select Seat Details Successfully");
+					}else{
+						Reporter.failureReport("validate Select Seat Details","validate Select Seat Details UnSuccessfully");
+					}
+					
+				}else{
+					Reporter.failureReport("validate EnteringPassengerDetails","validate one way booking UnSuccessfully");
+				}
+					
+			}else{
+				Reporter.failureReport("validate OneWaySelectFlights","validate one way booking UnSuccessfully");
+			}
+		}else{
+			Reporter.failureReport("validate OneWayBookingDetails","validate one way booking UnSuccessfully");
+
+		}
+		
+	}
+		
+	@Test()
+	public void TC_2_OneWay_Booking_With_TwoAdults_and_OneChild_And_AddOns() throws Throwable {
+		TestEngine.testDescription.put(HtmlReportSupport.tc_name,  " ONeWay Booking With TwoAdults and One Child and AddOns");
+		driver.manage().deleteAllCookies();
+		driver.get(configProps.getProperty("URL"));
+		
+		Thread.sleep(3000);
+		if( OneWayBookingDetails(2,1,"OneWay")){
+			
+			Reporter.SuccessReport("validate OneWayBookingDetails","validate OneWayBookingDetails Successfully");
+			if( SelectFlights("")){
+				
+				Reporter.SuccessReport("validate OneWaySelectFlights","validate OneWaySelectFlights Successfully");
+				if(EnteringPassengerDetails(false,true,true)){
+					Reporter.SuccessReport("validate EnteringPassengerDetails","validate Entering3PassengerDetails Successfully");
+					if(Addon()){
+						Reporter.SuccessReport("validate AddonDetails","validate AddonDetails Successfully");
+						if(selectSeat(3,"")){
+							Reporter.SuccessReport("validate SelectSeatDetails","validate SelectSeatDetails Successfully");
+						}
+					}else{
+						Reporter.failureReport("validate SelectSeatDetails","validate SelectSeatDetails UnSuccessfully");
+					}
+				}else{
+					Reporter.failureReport("validate EnteringPassengerDetails","validate EnteringPassengerDetails UnSuccessfully");
+				}
+			}else{
+				Reporter.failureReport("validate OneWaySelectFlights","validate OneWaySelectFlights UnSuccessfully");
+			}
+		}else{
+			Reporter.failureReport("validate OneWayBookingDetails","validate one way booking UnSuccessfully");
+
+		}
+	}
+	
+@Test()
+	public void TC_3_RoundTrip_Booking_With_OneAdult_And_NoAddOns() throws Throwable {
+	
+		TestEngine.testDescription.put(HtmlReportSupport.tc_name,  "  RoundTrip Booking With OneAdult And AddOns");
+		driver.manage().deleteAllCookies();
+		driver.get(configProps.getProperty("URL"));
+		if(OneWayBookingDetails(1,0,"Round")){
+			Reporter.SuccessReport("validate OneWayBookingDetails","validate OneWayBookingDetails Successfully");
+			if(SelectFlights("Round")){
+				Reporter.SuccessReport("validate OneWaySelectFlights","validate OneWaySelectFlights Successfully");
+
+				if(EnteringPassengerDetails(true,false,false)){
+					Reporter.SuccessReport("validate EnteringPassengerDetails","validate EnteringPassengerDetails Successfully");
+					if(selectSeat(1,"Round")){
+						Reporter.SuccessReport("validate Select Seat Details","validate Select Seat Details Successfully");
+					}else{
+						Reporter.failureReport("validate Select Seat Details","validate Select Seat Details UnSuccessfully");
+					}
+					
+				}else{
+					Reporter.failureReport("validate EnteringPassengerDetails","validate one way booking UnSuccessfully");
+				}
+					
+			}else{
+				Reporter.failureReport("validate SelectFlights","validate SelectFlights UnSuccessfully");
+			}
+		}else{
+			Reporter.failureReport("validate OneWayBookingDetails","validate one way booking UnSuccessfully");
+
+		}
+		
+	}
+	@Test()
+	public void TC_4_RoundTrip_Booking_With_TwoAdults_and_OneChild_And_AddOns() throws Throwable {
+		TestEngine.testDescription.put(HtmlReportSupport.tc_name,  " RoundTrip Booking With TwoAdults and One Child and AddOns");
+		driver.manage().deleteAllCookies();
+		driver.get(configProps.getProperty("URL"));
+		
+		Thread.sleep(3000);
+		if( OneWayBookingDetails(2,1,"Round")){
+			
+			Reporter.SuccessReport("validate OneWayBookingDetails","validate OneWayBookingDetails Successfully");
+			if( SelectFlights("Round")){
+				
+				Reporter.SuccessReport("validate OneWaySelectFlights","validate OneWaySelectFlights Successfully");
+				if(EnteringPassengerDetails(false,true,true)){
+					Reporter.SuccessReport("validate EnteringPassengerDetails","validate Entering3PassengerDetails Successfully");
+					if(Addon()){
+						Reporter.SuccessReport("validate AddonDetails","validate AddonDetails Successfully");
+						if(selectSeat(3,"")){
+							Reporter.SuccessReport("validate SelectSeatDetails","validate SelectSeatDetails Successfully");
+						}
+					}else{
+						Reporter.failureReport("validate SelectSeatDetails","validate SelectSeatDetails UnSuccessfully");
+					}
+				}else{
+					Reporter.failureReport("validate EnteringPassengerDetails","validate EnteringPassengerDetails UnSuccessfully");
+				}
+			}else{
+				Reporter.failureReport("validate OneWaySelectFlights","validate OneWaySelectFlights UnSuccessfully");
+			}
+		}else{
+			Reporter.failureReport("validate OneWayBookingDetails","validate one way booking UnSuccessfully");
+
+		}
+	}
+	
+}
+

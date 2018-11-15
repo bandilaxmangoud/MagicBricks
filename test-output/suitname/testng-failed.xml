@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Failed suite [suitname]">
+  <test name="testname (failed)">
+    <classes>
+      <class name="com.MagicBricks.scenarios.BuyPropertyScenario">
+        <methods>
+          <include name="setupSuite"/>
+          <include name="tearDown"/>
+          <include name="tearDown"/>
+          <include name="TC_1_BuyPropertySearch"/>
+        </methods>
+      </class> <!-- com.MagicBricks.scenarios.BuyPropertyScenario -->
+      <class name="com.MagicBricks.scenarios.RentPropertyScenario">
+        <methods>
+          <include name="tearDown"/>
+          <include name="openBrowser"/>
+          <include name="TC_1_RentPropertySearch"/>
+        </methods>
+      </class> <!-- com.MagicBricks.scenarios.RentPropertyScenario -->
+    </classes>
+  </test> <!-- testname (failed) -->
+</suite> <!-- Failed suite [suitname] -->

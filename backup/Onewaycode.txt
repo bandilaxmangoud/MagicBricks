@@ -1,0 +1,256 @@
+package com.airAsia.workFlows;  
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
+import org.apache.commons.lang3.math.IEEE754rUtils;
+import org.apache.log4j.Logger;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//import com.airAsia.testObjects.SignInLocators;
+import com.airAsia.testObjects.airAsiaOneWayLocators;
+import com.ctaf.accelerators.ActionEngine;
+import com.ctaf.support.ExcelReader;
+import com.ctaf.support.HtmlReportSupport;
+//import com.ctaf.utilities.FidlerUtils;
+
+
+public class OneWayTrip extends ActionEngine {
+	
+	ExcelReader xlsrdr = new ExcelReader(configProps.getProperty("TestData"),
+			configProps.getProperty("sheetName2"));
+	static Logger logger = Logger.getLogger(OneWayTrip.class.getName());
+	
+	public boolean OneWayBookingDetails(int adultsNo, int childNo, String BookingType) throws Throwable {
+		Date date= new Date();
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		sdf.format(date);
+		Calendar c = Calendar.getInstance();
+		c.add(Calendar.MONTH, 1);
+		Calendar c1 = Calendar.getInstance();
+		c1.add(Calendar.MONTH, 2);
+		String Departdate = (sdf.format(c.getTime()));
+		String Returndate =  (sdf.format(c1.getTime()));
+		
+		boolean res = false;
+		HtmlReportSupport.reportStep("Entering Trip Details");
+		ImplicitWait();
+		if(BookingType=="OneWay"){
+		waitForElementPresent(airAsiaOneWayLocators.oneWayTrip, "One Way Booking Form");
+		click(airAsiaOneWayLocators.oneWayTrip, "One Way Link");
+		}
+		waitForElementPresent(airAsiaOneWayLocators.Origin, "Wait For Origin Textbox");
+		type(airAsiaOneWayLocators.Origin,  xlsrdr.getCellValue("Origin", "value"), "Origin");
+		ImplicitWait();
+		driver.findElement(By.id("ControlGroupCompactView_AvailabilitySearchInputCompactVieworiginStationMultiColumn1_1")).sendKeys(Keys.TAB);
+		type(airAsiaOneWayLocators.Destination,  xlsrdr.getCellValue("Destination", "value"), "Destination");
+		driver.findElement(By.id("ControlGroupCompactView_AvailabilitySearchInputCompactViewdestinationStationMultiColumn1_1")).sendKeys(Keys.TAB);
+		driver.findElement(By.id("ControlGroupCompactView_AvailabilitySearchInputCompactViewdestinationStationMultiColumn1_1")).sendKeys(Keys.TAB);
+		waitForElementPresent(airAsiaOneWayLocators.Departdate, "Departdate");
+		type(airAsiaOneWayLocators.Departdate,  Departdate, "Departdate");
+		Thread.sleep(2000);
+		click(airAsiaOneWayLocators.NoOfAdults, "no of adults");
+		selectByValue(airAsiaOneWayLocators.NoOfAdults, "1", "Entering No of Adults");
+		Thread.sleep(5000);
+		if(BookingType=="Round"){
+			type(airAsiaOneWayLocators.Returndate,  Returndate, "Returndate");
+			click(airAsiaOneWayLocators.NoOfAdults, "no of adults");
+		}
+		
+		
+		if(adultsNo>1){
+		//waitForElementPresent(airAsiaOneWayLocators.NoOfAdults, "NoOfAdults");	
+		selectByValue(airAsiaOneWayLocators.NoOfAdults, xlsrdr.getCellValue("adultNum", "value"), "No Of Adults");
+		}
+		if(childNo>0){
+		//waitForElementPresent(airAsiaOneWayLocators.kidsOrInfants, "kidsOrInfants");	
+		click(airAsiaOneWayLocators.kidsOrInfants, "Kid/Infanr Link");
+		//waitForElementPresent(airAsiaOneWayLocators.NoOfkids, "kidsOrInfants");	
+		selectByValue(airAsiaOneWayLocators.NoOfkids, xlsrdr.getCellValue("childNum", "value"), "No Of Childs");
+		}
+		click(airAsiaOneWayLocators.Searchbtn, "Search Button");
+		/*if(!isElementPresent(airAsiaOneWayLocators.SearchFlightsbtn, "SearchFlights")){
+			waitForElementPresent(airAsiaOneWayLocators.OriginDD, "Wait For Origin Textbox");
+			type(airAsiaOneWayLocators.OriginDD,  xlsrdr.getCellValue("Origin", "value"), "Origin");
+			driver.findElement(By.id("ControlGroupSearchView_AvailabilitySearchInputSearchVieworiginStationMultiColumn1_1")).sendKeys(Keys.TAB);
+			type(airAsiaOneWayLocators.DestinationDD,  xlsrdr.getCellValue("Destination", "value"), "Destination");
+			driver.findElement(By.id("ControlGroupSearchView_AvailabilitySearchInputSearchViewdestinationStationMultiColumn1_1")).sendKeys(Keys.TAB);
+			waitForElementPresent(airAsiaOneWayLocators.Departdd, "Departdate");
+			type(airAsiaOneWayLocators.Departdd,  Departdate, "Departdate");
+			driver.findElement(By.id("ControlGroupSearchView_AvailabilitySearchInputSearchViewdate_picker_display_id_1")).sendKeys(Keys.TAB);
+			type(airAsiaOneWayLocators.returnDD,  Returndate, "Returndate");
+			click(airAsiaOneWayLocators.adultDD, "no of adults");
+			Thread.sleep(5000);
+			click(airAsiaOneWayLocators.SearchFlightsbtn, "Search Button");
+		}*/
+		
+		ImplicitWait();
+		if(isTextPresent("Depart")){
+			res = true;
+		}
+		return res;
+	}
+	
+		
+	public boolean SelectFlights(String BookingType) throws Throwable {
+		boolean res = false;
+		HtmlReportSupport.reportStep("Selecting Flight & Fare ");
+		ImplicitWait();
+		waitForElementPresent(airAsiaOneWayLocators.FlightRow, "FlightRow");
+		click(airAsiaOneWayLocators.premiumFlex, "Premiun Flight");
+		if(BookingType=="Round"){
+			waitForElementPresent(airAsiaOneWayLocators.premiumFlex2, "Return Flight");
+			click(airAsiaOneWayLocators.premiumFlex2, "Return Flight");
+			//JSClick(airAsiaOneWayLocators.premiumFlex2, "Return Flight");
+		}
+		waitForElementPresent(airAsiaOneWayLocators.continueButton, "continue Button");
+	    click(airAsiaOneWayLocators.continueButton, "continue Button");
+	    if(isTextPresent("Contact details")){
+			res = true;
+		}
+		return res;
+		
+		
+	}
+	public boolean EnteringPassengerDetails(boolean Adult1, boolean Adult2,boolean Child1) throws Throwable{
+		boolean res = false;
+		HtmlReportSupport.reportStep("Entering Passenger Details");
+		ImplicitWait();
+		Thread.sleep(10000);
+		
+		click(airAsiaOneWayLocators.Title, "Title");
+		selectByValue(airAsiaOneWayLocators.Title,  xlsrdr.getCellValue("Title", "value"), "Tilte");
+		type(airAsiaOneWayLocators.FirstName, xlsrdr.getCellValue("FirstName", "value"), "FirstName");
+		type(airAsiaOneWayLocators.lastName, xlsrdr.getCellValue("LastName", "value"), "LastName");
+		waitForElementPresent(airAsiaOneWayLocators.MobileCountry, "Selct Country");
+		click(airAsiaOneWayLocators.MobileCountry, "Selct Country");
+		selectByValue(airAsiaOneWayLocators.MobileCountry,  xlsrdr.getCellValue("Mcode", "value"), "Select Country");
+		type(airAsiaOneWayLocators.MobileNo,xlsrdr.getCellValue("MobNo", "value") , "MobNo");
+		type(airAsiaOneWayLocators.Emailid,xlsrdr.getCellValue("EmailId", "value") , "MobNo");
+		click(airAsiaOneWayLocators.NextButton, "NextButton");
+		waitForElementPresent(airAsiaOneWayLocators.day, "Select DOB");
+		click(airAsiaOneWayLocators.day, "Select Date");
+		selectByValue(airAsiaOneWayLocators.day, xlsrdr.getCellValue("Day", "value") , "Date");
+		selectByValue(airAsiaOneWayLocators.month, xlsrdr.getCellValue("Month", "value") , "Month");
+		selectByValue(airAsiaOneWayLocators.Year, xlsrdr.getCellValue("Year", "value") , "year");
+		//waitForElementPresent(airAsiaOneWayLocators.skiptoseat, "click on seat selection link");
+		if(Adult1==true){
+		click(airAsiaOneWayLocators.skiptoseat, "click on seat selection link");
+		waitForElementPresent(airAsiaOneWayLocators.skiptoseat, "click on seat selection link");
+		click(airAsiaOneWayLocators.skiptoseat, "click on seat selection link");
+		if(isTextPresent("Pick A Seat")){
+			res = true;
+		}
+		
+		}
+		if(Adult2 == true){
+			HtmlReportSupport.reportStep("Entering Adult2 Details");	
+		click(airAsiaOneWayLocators.NextButton, "NextButton");
+		click(airAsiaOneWayLocators.Adult2title, "Title");
+		selectByValue(airAsiaOneWayLocators.Adult2title,  xlsrdr.getCellValue("Title", "value"), "Tilte");
+		type(airAsiaOneWayLocators.FirstName1, xlsrdr.getCellValue("FirstName1", "value"), "FirstName");
+		type(airAsiaOneWayLocators.LastName1, xlsrdr.getCellValue("LastName1", "value"), "LastName");
+		waitForElementPresent(airAsiaOneWayLocators.Nationality, "Nationality");
+		click(airAsiaOneWayLocators.Nationality, "Nationality");
+		selectByValue(airAsiaOneWayLocators.Nationality, xlsrdr.getCellValue("Nationality", "value"), "Nationality");
+		selectByValue(airAsiaOneWayLocators.day1, xlsrdr.getCellValue("day1", "value") , "Date");
+		selectByValue(airAsiaOneWayLocators.month1, xlsrdr.getCellValue("month1", "value") , "Month");
+		selectByValue(airAsiaOneWayLocators.year1, xlsrdr.getCellValue("year1", "value") , "year");
+		waitForElementPresent(airAsiaOneWayLocators.NextButton, "NextButton");
+		click(airAsiaOneWayLocators.NextButton, "NextButton");
+		if(Child1==true){
+			HtmlReportSupport.reportStep("Entering Child Details");
+			click(airAsiaOneWayLocators.gender, "gender");
+			selectByValue(airAsiaOneWayLocators.gender,  xlsrdr.getCellValue("gender", "value"), "gender");
+			type(airAsiaOneWayLocators.FirstName2, xlsrdr.getCellValue("childFirstName", "value"), "FirstName");
+			type(airAsiaOneWayLocators.Lastname2, xlsrdr.getCellValue("childLastName", "value"), "LastName");
+			waitForElementPresent(airAsiaOneWayLocators.Nationality2, "Nationality");
+			click(airAsiaOneWayLocators.Nationality2, "Nationality");
+			
+			selectByValue(airAsiaOneWayLocators.Nationality2, xlsrdr.getCellValue("Nationality", "value"), "Nationality");
+			selectByValue(airAsiaOneWayLocators.day2, xlsrdr.getCellValue("cday", "value") , "Date");
+			selectByValue(airAsiaOneWayLocators.month2, xlsrdr.getCellValue("cmonth", "value") , "Month");
+			selectByValue(airAsiaOneWayLocators.year2, xlsrdr.getCellValue("cyear", "value") , "year");
+			waitForElementPresent(airAsiaOneWayLocators.travellerContinue, "Continue button");
+			click(airAsiaOneWayLocators.travellerContinue, "Continue button");
+			Thread.sleep(5000);
+			click(airAsiaOneWayLocators.travellerContinue, "Continue button");
+		}
+		if(isTextPresent("Car Rental")){
+			res = true;
+		}
+		}
+		
+		return res;
+		
+	}
+	
+	public boolean Addon() throws Throwable{
+		boolean res = false;
+		HtmlReportSupport.reportStep("Selecting Addon Details");
+		ImplicitWait();
+		Thread.sleep(5000);
+		//click(airAsiaOneWayLocators.BookRentalcarButton, "BookRentalcarButton");
+		//isElementPresent(airAsiaOneWayLocators.Carselection, "Carselection");
+		waitForElementPresent(airAsiaOneWayLocators.Continuebutton, "Add-on Service : Rental Car");
+		click(airAsiaOneWayLocators.Continuebutton, "Add-on Service");
+		if(isTextPresent("Pick A Seat")){
+			res = true;
+		}
+		return res;
+	}
+	
+	public boolean selectSeat(int TotalSeats, String BookingType) throws Throwable{
+		boolean res = false;
+		HtmlReportSupport.reportStep("Selecting Seat Details");
+		ImplicitWait();
+		Thread.sleep(10000);
+		if(TotalSeats<=1){
+
+		click(airAsiaOneWayLocators.SelectSeat, "Select Seat");
+		if(BookingType=="Round"){
+			waitForElementPresent(airAsiaOneWayLocators.Flight2, "Wait for Return Flight Details");
+			click(airAsiaOneWayLocators.Flight2, "Return Flight");
+			waitForElementPresent(airAsiaOneWayLocators.ReturnFlightSeat, "Wait For Seat in Return Flight");
+			click(airAsiaOneWayLocators.ReturnFlightSeat, "Seat For Return Flight");
+		}
+	
+		}
+		if(TotalSeats>1){
+			click(airAsiaOneWayLocators.seat1, "Seat For Guest1");
+			waitForElementPresent(airAsiaOneWayLocators.SeatFee1, "Seat For Guest2");
+			click(airAsiaOneWayLocators.SeatFee1, "SeatFee1");
+			click(airAsiaOneWayLocators.seat2, "Seat For Guest2");
+			waitForElementPresent(airAsiaOneWayLocators.SeatFee2, "Seat For Child1");
+			click(airAsiaOneWayLocators.SeatFee2, "SeatFee2");
+			click(airAsiaOneWayLocators.seat3, "Seat For Child1");
+		
+		}
+		waitForElementPresent(airAsiaOneWayLocators.checkoutButton, "checkoutButton");
+		click(airAsiaOneWayLocators.checkoutButton, "checkoutButton");
+		Thread.sleep(5000);
+		waitForElementPresent(airAsiaOneWayLocators.PageTitle, "Payment Page");
+		isElementPresent(airAsiaOneWayLocators.PageTitle, "payment Page");
+		if(isTextPresent("Review and pay")){
+			res = true;
+		}
+		return res;
+		
+	}
+}

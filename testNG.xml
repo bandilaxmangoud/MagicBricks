@@ -1,0 +1,29 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" > 
+
+<suite name="MagicBricks" allow-return-values="true">
+
+
+	<test name="Grouping" preserve-order="true">
+	<classes>
+			 
+			  <!-- 
+			  <class name="com.MagicBricks.scenarios.RentPropertyScenario" /> 
+			  <class name="com.MagicBricks.scenarios.BuyPropertyScenario" /> 
+			  <class name="com.MagicBricks.scenarios.FkartLoginScenario" /> 
+			 
+			   
+			  <class name="com.MagicBricks.scenarios.MagentoHomeScenario" /> 
+			  <class name="com.MagicBricks.scenarios.MagentoPriceScenario" /> 
+			  <class name="com.MagicBricks.scenarios.MagentoAlertScenario" /> 
+			  <class name="com.MagicBricks.scenarios.MagentoCompareScenario" /> 
+			  <class name="com.MagicBricks.scenarios.MagentoCreateAccountScenario" />
+			  
+			   -->
+			   
+			  <class name="com.MagicBricks.scenarios.IndigiLoginScenario" />  
+			  <class name="com.MagicBricks.scenarios.SearchFlightScenario" />  
+			
+		</classes>
+		
+	</test>
+</suite>

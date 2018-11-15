@@ -1,0 +1,9 @@
+
+<suite name="MagicBricks" allow-return-values="true">
+	<test name="MagicBricks">
+		<parameter name="choice" value="package" />
+		<classes>
+			<class name="com.ctaf.dataDriver.ReadExcel" />
+		</classes>
+	</test>
+</suite>
